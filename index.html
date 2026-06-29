@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐢 海龟汤 - 情境猜谜游戏</title>
+<style>
+:root {
+  --bg: #1a1a24;
+  --bg-card: #1e1e2e;
+  --bg-input: #252537;
+  --gold: #d4a853;
+  --gold-light: #e8c97a;
+  --gold-dark: #a07830;
+  --text: #e8dfd5;
+  --text-dim: #a09a90;
+  --text-muted: #6b6560;
+  --green: #5cb88d;
+  --red: #c85a5a;
+  --blue: #5a8dc8;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Noto Serif SC', 'STSong', serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+header {
+  text-align: center;
+  margin: 20px 0 30px;
+}
+header h1 { font-size: 2.2em; color: var(--gold); margin-bottom: 8px; }
+header p { color: var(--text-dim); font-size: 0.95em; }
+.main-container {
+  width: 100%;
+  max-width: 750px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid rgba(212,168,83,0.15);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  transition: all 0.4s ease;
+}
+.card.highlight { border-color: var(--gold); box-shadow: 0 0 32px rgba(212,168,83,0.25); }
+.soup-face {
+  font-size: 1.15em;
+  line-height: 1.8;
+  color: var(--text);
+  white-space: pre-wrap;
+  background: rgba(212,168,83,0.06);
+  border-left: 3px solid var(--gold);
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+.soup-bottom {
+  display: none;
+  margin-top: 16px;
+  padding: 16px 20px;
+  background: rgba(92,184,141,0.08);
+  border-left: 3px solid var(--green);
+  border-radius: 8px;
+  color: var(--green);
+  font-size: 1.05em;
+  line-height: 1.7;
+}
+.soup-bottom.visible { display: block; }
+.qa-log {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+.qa-log::-webkit-scrollbar { width: 5px; }
+.qa-log::-webkit-scrollbar-thumb { background: rgba(212,168,83,0.3); border-radius: 10px; }
+.qa-entry {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 12px;
+  animation: fadeIn 0.35s ease;
+}
+@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+.qa-badge {
+  font-size: 0.75em;
+  font-weight: bold;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.qa-badge.yes { background: rgba(92,184,141,0.2); color: var(--green); }
+.qa-badge.no { background: rgba(200,90,90,0.2); color: var(--red); }
+.qa-badge.irrelevant { background: rgba(107,101,96,0.25); color: var(--text-muted); }
+.qa-question { color: var(--text); }
+.input-area {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+.input-area input {
+  flex: 1;
+  background: var(--bg-input);
+  border: 1px solid rgba(212,168,83,0.2);
+  color: var(--text);
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 1em;
+  outline: none;
+  transition: border 0.3s;
+}
+.input-area input:focus { border-color: var(--gold); }
+.btn {
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95em;
+  font-weight: 600;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.btn-primary { background: var(--gold); color: #1a1a24; }
+.btn-primary:hover { background: var(--gold-light); }
+.btn-secondary { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
+.btn-secondary:hover { background: rgba(212,168,83,0.1); }
+.btn-sm { padding: 6px 14px; font-size: 0.85em; }
+.judge-btns { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.judge-btn {
+  flex: 1; min-width: 60px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(212,168,83,0.25);
+  background: var(--bg-input);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.85em;
+  transition: all 0.25s;
+}
+.judge-btn:hover { border-color: var(--gold); }
+.judge-btn:active { transform: scale(0.96); }
+.puzzle-nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.puzzle-dot {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--bg-input);
+  border: 2px solid rgba(212,168,83,0.3);
+  color: var(--text-dim);
+  font-size: 0.8em;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex; align-items: center; justify-content: center;
+}
+.puzzle-dot.active { background: var(--gold); color: #1a1a24; border-color: var(--gold); font-weight: bold; }
+.puzzle-dot:hover { border-color: var(--gold-light); }
+.mode-toggle {
+  display: flex;
+  background: var(--bg-input);
+  border-radius: 25px;
+  padding: 4px;
+  margin: 0 auto;
+  width: fit-content;
+}
+.mode-btn {
+  padding: 8px 22px;
+  border-radius: 22px;
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: all 0.3s;
+}
+.mode-btn.active { background: var(--gold); color: #1a1a24; font-weight: bold; }
+.toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-card);
+  border: 1px solid var(--gold);
+  color: var(--gold-light);
+  padding: 10px 24px;
+  border-radius: 25px;
+  font-size: 0.9em;
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; }
+summary { cursor: pointer; color: var(--gold); font-size: 0.9em; margin-top: 12px; }
+details { margin-top: 8px; }
+@media (max-width: 768px) {
+  body { padding: 12px; }
+  header h1 { font-size: 1.6em; }
+  .card { padding: 16px; }
+}
+@media (max-width: 400px) {
+  header h1 { font-size: 1.3em; }
+  .judge-btns { flex-direction: column; }
+  .puzzle-dot { width: 30px; height: 30px; font-size: 0.7em; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🐢 海龟汤</h1>
+  <p>情境猜谜游戏 · 8道精选谜题</p>
+</header>
+
+<div class="main-container">
+  <!-- 模式切换 -->
+  <div class="mode-toggle">
+    <button class="mode-btn active" onclick="setMode('auto')" id="modeAuto">🤖 自动判断</button>
+    <button class="mode-btn" onclick="setMode('manual')" id="modeManual">👤 手动判断</button>
+  </div>
+
+  <!-- 题目导航 -->
+  <div class="card">
+    <div class="puzzle-nav" id="puzzleNav"></div>
+  </div>
+
+  <!-- 汤面卡片 -->
+  <div class="card" id="faceCard">
+    <strong style="color:var(--gold)">📜 汤面</strong>
+    <div class="soup-face" id="soupFace"></div>
+    <details>
+      <summary>🔍 点击查看汤底（剧透）</summary>
+      <div class="soup-bottom visible" id="soupBottom" style="display:block;"></div>
+    </details>
+  </div>
+
+  <!-- 问答记录 -->
+  <div class="card">
+    <strong style="color:var(--gold)">💬 问答记录</strong>
+    <div class="qa-log" id="qaLog">
+      <div style="color:var(--text-muted);text-align:center;padding:30px;">
+        输入你的问题，尝试推理出海龟汤的真相...
+      </div>
+    </div>
+    <!-- 输入区 -->
+    <div class="input-area">
+      <input type="text" id="questionInput" placeholder="输入你的问题..." onkeydown="if(event.key==='Enter')askQuestion()">
+      <button class="btn btn-primary" onclick="askQuestion()">提问</button>
+      <button class="btn btn-secondary btn-sm" onclick="resetQA()">重置</button>
+    </div>
+    <!-- 手动判断按钮 -->
+    <div class="judge-btns" id="judgeBtns" style="display:none;">
+      <button class="judge-btn" onclick="manualJudge('yes')" style="color:var(--green)">✅ 是 (Y)</button>
+      <button class="judge-btn" onclick="manualJudge('no')" style="color:var(--red)">❌ 否 (N)</button>
+      <button class="judge-btn" onclick="manualJudge('irrelevant')" style="color:var(--text-muted)">➖ 无关 (I)</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ==================== 谜题库 ====================
+const puzzles = [
+  {
+    id: 1,
+    title: '海龟汤',
+    face: '一个男人走进一家餐厅，点了一碗海龟汤。他喝了一口后，走出餐厅，开枪自杀了。为什么？',
+    bottom: '这个男人多年前与妻子出海时遭遇海难，妻子失踪。他一直以为妻子已死。多年后，他在餐厅喝到海龟汤，发现味道与他当年在海上喝到的"海龟汤"完全不同——原来当年他喝的不是海龟汤，而是用他妻子煮的汤。意识到真相后，他崩溃自杀。',
+    yes_keywords: ['妻子','老婆','海难','失踪','味道','不同','一样','煮','人肉','汤','海上','出海','船','回忆','发现','意识到','真相','崩溃','误食','吃'],
+    no_keywords: ['餐厅','服务员','谋杀','杀','报仇','仇人','钱','债务','生病','癌症','孩子','儿子','女儿','父母','工作','失业','毒','药','枪','子弹'],
+    themeWords: ['海龟','汤','喝','餐厅','自杀','男人','味道','海','船']
+  },
+  {
+    id: 2,
+    title: '酒吧与水',
+    face: '一个男人走进酒吧，向酒保要了一杯水。酒保突然拔出一把枪指着他。男人愣了一下，然后说"谢谢"，高兴地走出了酒吧。为什么？',
+    bottom: '这个男人正在打嗝，所以他去酒吧要一杯水想止住打嗝。酒保看出他在打嗝，于是用枪吓唬他。惊吓成功地止住了他的打嗝。所以男人说谢谢后高兴地离开。',
+    yes_keywords: ['打嗝','吓','惊吓','吓唬','止住','治','疗法','偏方','害怕','意外'],
+    no_keywords: ['抢劫','钱','威胁','开枪','子弹','受伤','杀人','报警','警察','仇','恨','醉','酒','渴','热'],
+    themeWords: ['酒吧','水','枪','谢谢','高兴','走','酒保']
+  },
+  {
+    id: 3,
+    title: '电梯之谜',
+    face: '有一个男人住在10楼。每天早上他坐电梯到1楼去上班。但每天下班回来，他只会坐到7楼，然后走楼梯上10楼。为什么？（电梯没有坏，下雨天他会直接坐到10楼）',
+    bottom: '这个男人是侏儒（身材矮小）。他只能按到电梯按钮的第7层。下雨天他会带伞，用伞柄可以按到第10层的按钮。',
+    yes_keywords: ['矮','侏儒','身高','矮小','不够高','按不到','按钮','够不着','矮个子','个子矮','手短','伞','伞柄','下雨','够'],
+    no_keywords: ['锻炼','运动','朋友','邻居','钥匙','忘记','快递','外卖','腿','膝盖','疼','累','习惯','省电','坏','故障'],
+    themeWords: ['电梯','10楼','7楼','楼梯','走','下雨','天','上班','下班']
+  },
+  {
+    id: 4,
+    title: '红色高跟鞋',
+    face: '一个女人买了一双红色高跟鞋，穿上后不久就死了。为什么？',
+    bottom: '这个女人是马戏团的杂技演员，表演"人肉飞刀"节目。她穿着红色高跟鞋表演时，助手蒙眼投掷飞刀。但红色高跟鞋太显眼，在灯光下反光晃到了助手的眼睛，导致飞刀偏离，刺中了她。',
+    yes_keywords: ['马戏团','杂技','飞刀','表演','反光','晃眼','刺','中','刀','演员','舞台','灯光','助手','失误','意外'],
+    no_keywords: ['毒','药','过敏','摔','绊倒','车祸','抢劫','谋杀','自杀','鞋跟','扎','刺伤','脚','疾病','心脏'],
+    themeWords: ['红色','高跟鞋','买','穿','死','女人']
+  },
+  {
+    id: 5,
+    title: '生日蛋糕',
+    face: '一个人收到了一个生日蛋糕，但他打开后非常愤怒，把蛋糕扔在地上。为什么？',
+    bottom: '这个人是盲人。他过生日时收到了一个蛋糕，非常开心。但当他打开盒子时，发现蛋糕上插满了点燃的蜡烛——他能感觉到热度。他认为这是朋友在残忍地嘲笑他的失明——明明看不见却给他点蜡烛。实际朋友们只是想给他一个正常的生日惊喜，忘记了他的盲人身份。',
+    yes_keywords: ['盲人','看不见','失明','瞎','蜡烛','火','热','烫','感觉到','嘲笑','讽刺','朋友','忘记','温度','烧伤','烫伤'],
+    no_keywords: ['过敏','口味','不喜欢','难吃','坏了','虫子','蟑螂','恶作剧','仇人','假','塑料','过期','蛋糕店','写错','名字'],
+    themeWords: ['生日','蛋糕','愤怒','扔','收到','打开']
+  },
+  {
+    id: 6,
+    title: '对面的灯光',
+    face: '一个女人每天晚上都会看到对面楼的一个房间里有一盏灯亮着。某天晚上那盏灯没有亮，她立刻打电话报了警。为什么？',
+    bottom: '这个女人是盲人。她每天晚上"看到"灯光，实际上是她的导盲犬会对着对面楼的方向叫。那盏灯亮着时，导盲犬因为光线变化会叫。某天灯灭了，狗没有叫，她察觉异常后报警。警察赶到后发现对面房间发生了一起谋杀案，尸体就在窗前。实际上这个女人不是盲人——另一种版本：对面住着一个老人，每天晚上都会开灯表示平安。那天灯没亮，她担心老人出事了，于是报警。警察发现老人已去世。',
+    yes_keywords: ['老人','平安','信号','约定','邻居','独居','摔倒','去世','死','生病','担心','关心','习惯','每天','规律'],
+    no_keywords: ['盲人','狗','导盲犬','叫','谋杀','小偷','贼','抢劫','绑架','失踪','声音','吵','睡不着','烦'],
+    themeWords: ['灯','对面','楼','房间','每天','亮','晚上','报警','警察']
+  },
+  {
+    id: 7,
+    title: '半个人',
+    face: '一个人住在沙漠边缘的小屋里。某天有人敲门，他打开门，看到门外只有半个人。他立刻关上门，收拾行李离开了沙漠。为什么？',
+    bottom: '这个人住在沙漠边缘，他有一个朋友住在沙漠另一端的绿洲。一天朋友来访，但他只看到了朋友的上半身——因为朋友在穿越沙漠时陷入了流沙，只剩上半身露在外面。而敲门的是路过的旅人，他们发现了陷在流沙中的朋友，但只来得及拖出上半身（朋友已经死了）。男人看到半截尸体后吓坏了，意识到沙漠的危险，决定离开。更常见的版本：门外是一个被埋在沙里的人，只露出上半身，已经死了。',
+    yes_keywords: ['流沙','陷','埋','沙','沙漠','死','上半身','尸体','危险','吓','害怕','朋友','旅人','路过','发现'],
+    no_keywords: ['魔术','玩笑','假装','蹲着','弯腰','躲','藏','门','洞','坑','井','幻觉','梦','假人','模型'],
+    themeWords: ['沙漠','小屋','敲门','半个人','离开','收拾行李']
+  },
+  {
+    id: 8,
+    title: '深夜敲门声',
+    face: '凌晨3点，一个女人听到有人在敲她的门。她从猫眼看出去，外面空无一人。但敲门声仍在继续。她打开门，门外确实没有人。但当她低下头时，她尖叫了起来。为什么？',
+    bottom: '门外是一个没有腿的乞丐（或残疾人），他用手支撑着身体在地上爬行。因为他太矮了，从猫眼看不到他。他用仅有的一只手敲门，所以女人打开门往下看时才看到他。他只是在乞讨食物或钱。',
+    yes_keywords: ['乞丐','残疾人','没有腿','爬','矮','猫眼','看不到','往下看','手','支撑','地上','躺','趴','乞讨','要饭'],
+    no_keywords: ['鬼','幽灵','杀人','凶手','藏','躲','天花板','上面','小孩','恶作剧','玩笑','梦','幻觉','精神','疯'],
+    themeWords: ['凌晨','敲门','猫眼','没人','尖叫','女人','门']
+  }
+];
+
+// ==================== 状态管理 ====================
+let currentPuzzle = 0;
+let mode = 'auto'; // 'auto' | 'manual'
+let qaHistory = [];
+
+// ==================== 初始化 ====================
+function init() {
+  renderPuzzleNav();
+  loadPuzzle(0);
+}
+
+function renderPuzzleNav() {
+  const nav = document.getElementById('puzzleNav');
+  nav.innerHTML = puzzles.map((p, i) =>
+    `<button class="puzzle-dot${i === currentPuzzle ? ' active' : ''}" onclick="loadPuzzle(${i})">${p.id}</button>`
+  ).join('');
+}
+
+function loadPuzzle(index) {
+  currentPuzzle = index;
+  qaHistory = [];
+  document.getElementById('soupFace').textContent = puzzles[index].face;
+  document.getElementById('soupBottom').textContent = puzzles[index].bottom;
+  document.getElementById('qaLog').innerHTML =
+    '<div style="color:var(--text-muted);text-align:center;padding:30px;">输入你的问题，尝试推理出海龟汤的真相...</div>';
+  document.getElementById('questionInput').value = '';
+  renderPuzzleNav();
+  // 高亮动画
+  const card = document.getElementById('faceCard');
+  card.classList.add('highlight');
+  setTimeout(() => card.classList.remove('highlight'), 600);
+  updateJudgeVisibility();
+}
+
+function setMode(m) {
+  mode = m;
+  document.getElementById('modeAuto').classList.toggle('active', m === 'auto');
+  document.getElementById('modeManual').classList.toggle('active', m === 'manual');
+  updateJudgeVisibility();
+}
+
+function updateJudgeVisibility() {
+  document.getElementById('judgeBtns').style.display = mode === 'manual' ? 'flex' : 'none';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timeout);
+  t._timeout = setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// ==================== 自动判断引擎 ====================
+function autoJudge(question) {
+  const p = puzzles[currentPuzzle];
+  const q = question.toLowerCase();
+  let yesScore = 0, noScore = 0;
+
+  for (const kw of p.yes_keywords) {
+    const kwLower = kw.toLowerCase();
+    if (q.includes(kwLower)) {
+      yesScore += kwLower.length >= 3 ? 2 : 1;
+    }
+  }
+  for (const kw of p.no_keywords) {
+    const kwLower = kw.toLowerCase();
+    if (q.includes(kwLower)) {
+      noScore += kwLower.length >= 3 ? 2 : 1;
+    }
+  }
+  // 主题词轻微加分（增强相关性）
+  for (const tw of p.themeWords) {
+    if (q.includes(tw.toLowerCase())) yesScore += 0.5;
+  }
+
+  if (yesScore >= 2) return 'yes';
+  if (noScore >= 2 && yesScore < 1) return 'no';
+  if (yesScore > noScore * 1.5) return 'yes';
+  if (noScore > yesScore * 1.5) return 'no';
+  if (yesScore > 0 && noScore > 0 && yesScore >= noScore) return 'yes';
+  if (yesScore > 0 && noScore > 0 && noScore > yesScore) return 'no';
+  return 'irrelevant';
+}
+
+// ==================== 提问处理 ====================
+function askQuestion() {
+  const input = document.getElementById('questionInput');
+  const question = input.value.trim();
+  if (!question) return;
+
+  let judgment;
+  if (mode === 'auto') {
+    judgment = autoJudge(question);
+  } else {
+    showToast('请使用下方按钮进行判断');
+    // 在手动模式下，先显示问题等待判断
+    addQAEntry(question, null);
+    input.value = '';
+    return;
+  }
+
+  addQAEntry(question, judgment);
+  input.value = '';
+}
+
+function manualJudge(judgment) {
+  if (mode !== 'manual') return;
+  const lastEntry = qaHistory[qaHistory.length - 1];
+  if (!lastEntry || lastEntry.judgment !== null) {
+    showToast('请先输入一个问题');
+    return;
+  }
+  lastEntry.judgment = judgment;
+  refreshQALog();
+}
+
+function addQAEntry(question, judgment) {
+  qaHistory.push({ question, judgment });
+  refreshQALog();
+}
+
+function refreshQALog() {
+  const log = document.getElementById('qaLog');
+  if (qaHistory.length === 0) {
+    log.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:30px;">输入你的问题，尝试推理出海龟汤的真相...</div>';
+    return;
+  }
+  log.innerHTML = qaHistory.map(qa => {
+    const badgeClass = qa.judgment || 'pending';
+    const badgeText = qa.judgment === 'yes' ? '✅ 是' : qa.judgment === 'no' ? '❌ 否' : qa.judgment === 'irrelevant' ? '➖ 无关' : '⏳ 待判';
+    return `<div class="qa-entry">
+      <span class="qa-badge ${badgeClass}">${badgeText}</span>
+      <span class="qa-question">${escapeHtml(qa.question)}</span>
+    </div>`;
+  }).join('');
+  log.scrollTop = log.scrollHeight;
+}
+
+function resetQA() {
+  qaHistory = [];
+  refreshQALog();
+  document.getElementById('questionInput').value = '';
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ==================== 键盘快捷键 ====================
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT') return; // 不在输入框时
+  if (mode === 'manual') {
+    if (e.key === 'y' || e.key === 'Y' || e.key === '1') manualJudge('yes');
+    if (e.key === 'n' || e.key === 'N' || e.key === '2') manualJudge('no');
+    if (e.key === 'i' || e.key === 'I' || e.key === '3') manualJudge('irrelevant');
+  }
+  if (e.key === '/' && e.ctrlKey === false) {
+    e.preventDefault();
+    document.getElementById('questionInput').focus();
+  }
+  if (e.ctrlKey && e.key === 'b') {
+    e.preventDefault();
+    const details = document.querySelector('details');
+    if (details) details.open = !details.open;
+  }
+});
+
+// ==================== 启动 ====================
+init();
+console.log('🐢 海龟汤游戏就绪 | 快捷键: Y/N/I 判断 | Ctrl+B 汤底 | / 聚焦输入框');
+</script>
+
+</body>
+</html>
