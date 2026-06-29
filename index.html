@@ -3,65 +3,81 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🐢 海龟汤 - 情境猜谜游戏</title>
-  <link rel="stylesheet" href="css/styles.css">
+<title>海彟汤 多野宨骄中図</title>
+<link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-
-<header>
-  <h1>🐢 海龟汤</h1>
-  <p>情境猜谜游戏 · 8道精选谜题</p>
-</header>
-
-<div class="main-container">
-  <!-- 模式切换 -->
-  <div class="mode-toggle">
-    <button class="mode-btn active" onclick="setMode('auto')" id="modeAuto">🤖 自动判断</button>
-    <button class="mode-btn" onclick="setMode('manual')" id="modeManual">👤 手动判断</button>
-  </div>
-
-  <!-- 题目导航 -->
-  <div class="card">
-    <div class="puzzle-nav" id="puzzleNav"></div>
-  </div>
-
-  <!-- 汤面卡片 -->
-  <div class="card" id="faceCard">
-    <strong style="color:var(--gold)">📜 汤面</strong>
-    <div class="soup-face" id="soupFace"></div>
-    <details>
-      <summary>🔍 点击查看汤底（剧透）</summary>
-      <div class="soup-bottom visible" id="soupBottom" style="display:block;"></div>
-    </details>
-  </div>
-
-  <!-- 问答记录 -->
-  <div class="card">
-    <strong style="color:var(--gold)">💬 问答记录</strong>
-    <div class="qa-log" id="qaLog">
-      <div style="color:var(--text-muted);text-align:center;padding:30px;">
-        输入你的问题，尝试推理出海龟汤的真相...
-      </div>
-    </div>
-    <!-- 输入区 -->
-    <div class="input-area">
-      <input type="text" id="questionInput" placeholder="输入你的问题..." onkeydown="if(event.key==='Enter')askQuestion()">
-      <button class="btn btn-primary" onclick="askQuestion()">提问</button>
-      <button class="btn btn-secondary btn-sm" onclick="resetQA()">重置</button>
-    </div>
-    <!-- 手动判断按钮 -->
-    <div class="judge-btns" id="judgeBtns" style="display:none;">
-      <button class="judge-btn" onclick="manualJudge('yes')" style="color:var(--green)">✅ 是 (Y)</button>
-      <button class="judge-btn" onclick="manualJudge('no')" style="color:var(--red)">❌ 否 (N)</button>
-      <button class="judge-btn" onclick="manualJudge('irrelevant')" style="color:var(--text-muted)">➖ 无关 (I)</button>
-    </div>
-  </div>
+<div class="container" id="setupPage">
+<div class="setup-card">
+<h1 class="setup-title">海彟汤</h1>
+<div class="setup-group">
+<label class="setup-label">主持人名称</label>
+<input type="text" class="setup-input" id="hostName" placeholder="请输入主持人名称" maxlength="12" value="主持人名称">
 </div>
-
-<div class="toast" id="toast"></div>
-
-
-
-  <script src="js/script.js"></script>
+<div class="setup-group">
+<label class="setup-label">工具名称</label>
+<div class="player-input-row">
+<input type="text" class="setup-input" id="playerName" placeholder="请输入玩家名称" maxlength="8">
+<button class="btn-add-player" id="addPlayerBtn">+ 加</button>
+</div>
+<div class="player-list" id="playerList"></div>
+</div>
+<div class="setup-group">
+<label class="setup-label">Level 频题选择</label>
+<div class="puzzle-select" id="puzzleSelect"></div>
+</div>
+<button class="btn-start" id="startGameBtn">开始海这</button>
+</div>
+</div>
+<div class="container" id="gamePage" style="display:none;">
+<div class="game-header">
+<div class="host-badge"><span>🎆</span> <span id="hostNameDisplay">主持人</span></div>
+<div class="progress">第 <span id="currentPuzzle">1</span> / <span id="totalPuzzle">8</span> 频</div>
+<div class="header-btns">
+<button class="btn-invite" id="inviteBtn">💩 邯语</button>
+<button class="btn-reset" id="resetBtn">重新语泅</button>
+</div>
+</div>
+<div class="participants" id="participants"></div>
+<div class="soup-panel" id="soupPanel">
+<div class="soup-text" id="soupText"></div>
+<div class="details-toggle" id="detailsToggle">👑 查看斯底</div>
+<div class="details-content" id="detailsContent" style="display:none;"></div>
+</div>
+<div class="qa-section" id="qaSection"></div>
+<div class="input-row" id="inputRow">
+<input type="text" class="question-input" id="questionInput" placeholder="输入意外地这取一条机域答理按的班筮..." maxlength="100">
+<button class="btn-send" id="sendBtn">发送</button>
+</div>
+<div class="judge-row" id="judgeRow" style="display:none;">
+<button class="btn-yes">是</button>
+<button class="btn-no">否</button>
+<button class="btn-irrelevant">无填</button>
+<div class="next-player" id="nextPlayer"><span id="nextPlayerName"></span> 占弹笭待</div>
+</div>
+</div>
+<div class="modal" id="inviteModal" style="display:none;">
+<div class="modal-content">
+<div class="modal-header">
+<span class="modal-title">🔌 适请朋友一起取</span>
+<button class="modal-close">&times;</button>
+</div>
+<div class="modal-body">
+<div class="invite-link-box">
+<input type="text" class="invite-link-input" id="inviteLinkInput" readonly>
+<button class="btn-copy" id="copyLinkBtn">📍 复制链接系成</button>
+</div>
+<div class="invite-player-list" id="invitePlayerList"></div>
+<div class="invite-rules">
+<h4>📨 海这骄中図华分</h4>
+<ul>
+<li>1）主持人增加箩家宏実名珰，选择频题，关闭打斯底；</li>
+<li>3）玩家一个用户可在完全接受为才知过信一双哎等一反；</li>
+<li>3）人周成目发送本机又根根讀当治理, 完劂 辅入口仁一个我机可以大失新体在年到的线似的用户人</p>
+</div>
+</div>
+</div>
+</div>
+<script src="js/script.js"></script>
 </body>
 </html>
