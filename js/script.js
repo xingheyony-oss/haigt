@@ -5,118 +5,408 @@ const puzzles = [
     title: '海龟汤',
     face: '一个男人走进一家餐厅，点了一碗海龟汤。他喝了一口后，走出餐厅，开枪自杀了。为什么？',
     bottom: '这个男人多年前与妻子出海时遭遇海难，妻子失踪。他一直以为妻子已死。多年后，他在餐厅喝到海龟汤，发现味道与他当年在海上喝到的"海龟汤"完全不同——原来当年他喝的不是海龟汤，而是用他妻子煮的汤。意识到真相后，他崩溃自杀。',
-    yes_keywords: ['妻子','老婆','海难','失踪','味道','不同','一样','煮','人肉','汤','海上','出海','船','回忆','发现','意识到','真相','崩溃','误食','吃'],
-    no_keywords: ['餐厅','服务员','谋杀','杀','报仇','仇人','钱','债务','生病','癌症','孩子','儿子','女儿','父母','工作','失业','毒','药','枪','子弹'],
-    themeWords: ['海龟','汤','喝','餐厅','自杀','男人','味道','海','船']
+    keywords: ['妻子','海难','失踪','味道','不同','煮','人肉','海上','船','回忆']
   },
   {
     id: 2,
     title: '酒吧与水',
     face: '一个男人走进酒吧，向酒保要了一杯水。酒保突然拔出一把枪指着他。男人愣了一下，然后说"谢谢"，高兴地走出了酒吧。为什么？',
     bottom: '这个男人正在打嗝，所以他去酒吧要一杯水想止住打嗝。酒保看出他在打嗝，于是用枪吓唬他。惊吓成功地止住了他的打嗝。所以男人说谢谢后高兴地离开。',
-    yes_keywords: ['打嗝','吓','惊吓','吓唬','止住','治','疗法','偏方','害怕','意外'],
-    no_keywords: ['抢劫','钱','威胁','开枪','子弹','受伤','杀人','报警','警察','仇','恨','醉','酒','渴','热'],
-    themeWords: ['酒吧','水','枪','谢谢','高兴','走','酒保']
+    keywords: ['打嗝','吓','惊吓','止住','偏方','酒吧','酒保']
   },
   {
     id: 3,
     title: '电梯之谜',
-    face: '有一个男人住在10楼。每天早上他坐电梯到1楼去上班。但每天下班回来，他只会坐到7楼，然后走楼梯上10楼。为什么？（电梯没有坏，下雨天他会直接坐到10楼）',
+    face: '有一个男人住在10楼。每天早上他坐电梯到1楼去下班。但每天下班回来，他只会坐到7楼，然后走楼梯上10楼。为什么？（电梯没有坏，下雨天他会直接坐到10楼）',
     bottom: '这个男人是侏儒（身材矮小）。他只能按到电梯按钮的第7层。下雨天他会带伞，用伞柄可以按到第10层的按钮。',
-    yes_keywords: ['矮','侏儒','身高','矮小','不够高','按不到','按钮','够不着','矮个子','个子矮','手短','伞','伞柄','下雨','够'],
-    no_keywords: ['锻炼','运动','朋友','邻居','钥匙','忘记','快递','外卖','腿','膝盖','疼','累','习惯','省电','坏','故障'],
-    themeWords: ['电梯','10楼','7楼','楼梯','走','下雨','天','上班','下班']
+    keywords: ['矮','侏儒','身高','按不到','按钮','伞','伞柄','下雨']
   },
   {
     id: 4,
     title: '红色高跟鞋',
     face: '一个女人买了一双红色高跟鞋，穿上后不久就死了。为什么？',
     bottom: '这个女人是马戏团的杂技演员，表演"人肉飞刀"节目。她穿着红色高跟鞋表演时，助手蒙眼投掷飞刀。但红色高跟鞋太显眼，在灯光下反光晃到了助手的眼睛，导致飞刀偏离，刺中了她。',
-    yes_keywords: ['马戏团','杂技','飞刀','表演','反光','晃眼','刺','中','刀','演员','舞台','灯光','助手','失误','意外'],
-    no_keywords: ['毒','药','过敏','摔','绊倒','车祸','抢劫','谋杀','自杀','鞋跟','扎','刺伤','脚','疾病','心脏'],
-    themeWords: ['红色','高跟鞋','买','穿','死','女人']
+    keywords: ['马戏团','杂技','飞刀','表演','反光','晃眼','灯光','助手','失误']
   },
   {
     id: 5,
     title: '生日蛋糕',
     face: '一个人收到了一个生日蛋糕，但他打开后非常愤怒，把蛋糕扔在地上。为什么？',
     bottom: '这个人是盲人。他过生日时收到了一个蛋糕，非常开心。但当他打开盒子时，发现蛋糕上插满了点燃的蜡烛——他能感觉到热度。他认为这是朋友在残忍地嘲笑他的失明——明明看不见却给他点蜡烛。实际朋友们只是想给他一个正常的生日惊喜，忘记了他的盲人身份。',
-    yes_keywords: ['盲人','看不见','失明','瞎','蜡烛','火','热','烫','感觉到','嘲笑','讽刺','朋友','忘记','温度','烧伤','烫伤'],
-    no_keywords: ['过敏','口味','不喜欢','难吃','坏了','虫子','蟑螂','恶作剧','仇人','假','塑料','过期','蛋糕店','写错','名字'],
-    themeWords: ['生日','蛋糕','愤怒','扔','收到','打开']
+    keywords: ['盲人','看不见','失明','蜡烛','火','热','嘲笑','朋友']
   },
   {
     id: 6,
     title: '对面的灯光',
     face: '一个女人每天晚上都会看到对面楼的一个房间里有一盏灯亮着。某天晚上那盏灯没有亮，她立刻打电话报了警。为什么？',
-    bottom: '这个女人是盲人。她每天晚上"看到"灯光，实际上是她的导盲犬会对着对面楼的方向叫。那盏灯亮着时，导盲犬因为光线变化会叫。某天灯灭了，狗没有叫，她察觉异常后报警。警察赶到后发现对面房间发生了一起谋杀案，尸体就在窗前。实际上这个女人不是盲人——另一种版本：对面住着一个老人，每天晚上都会开灯表示平安。那天灯没亮，她担心老人出事了，于是报警。警察发现老人已去世。',
-    yes_keywords: ['老人','平安','信号','约定','邻居','独居','摔倒','去世','死','生病','担心','关心','习惯','每天','规律'],
-    no_keywords: ['盲人','狗','导盲犬','叫','谋杀','小偷','贼','抢劫','绑架','失踪','声音','吵','睡不着','烦'],
-    themeWords: ['灯','对面','楼','房间','每天','亮','晚上','报警','警察']
+    bottom: '对面住着一位独居老人，每晚都会开灯报平安。那天灯没亮，女人担心老人出事了于是报警。警察赶到后发现老人已经去世。',
+    keywords: ['老人','平安','信号','约定','邻居','独居','摔倒','去世','担心']
   },
   {
     id: 7,
     title: '半个人',
     face: '一个人住在沙漠边缘的小屋里。某天有人敲门，他打开门，看到门外只有半个人。他立刻关上门，收拾行李离开了沙漠。为什么？',
-    bottom: '这个人住在沙漠边缘，他有一个朋友住在沙漠另一端的绿洲。一天朋友来访，但他只看到了朋友的上半身——因为朋友在穿越沙漠时陷入了流沙，只剩上半身露在外面。而敲门的是路过的旅人，他们发现了陷在流沙中的朋友，但只来得及拖出上半身（朋友已经死了）。男人看到半截尸体后吓坏了，意识到沙漠的危险，决定离开。更常见的版本：门外是一个被埋在沙里的人，只露出上半身，已经死了。',
-    yes_keywords: ['流沙','陷','埋','沙','沙漠','死','上半身','尸体','危险','吓','害怕','朋友','旅人','路过','发现'],
-    no_keywords: ['魔术','玩笑','假装','蹲着','弯腰','躲','藏','门','洞','坑','井','幻觉','梦','假人','模型'],
-    themeWords: ['沙漠','小屋','敲门','半个人','离开','收拾行李']
+    bottom: '这个人有一个朋友住在沙漠另一边的绿洲。一天朋友穿越沙漠来访，不幸陷入流沙。路过的旅人发现了困在流沙中的朋友，但只来得及拖出上半身（朋友已经死了）。他们带着半截尸体来敲门。男人吓坏了，决定离开沙漠。',
+    keywords: ['流沙','陷','埋','沙漠','死','上半身','尸体','危险','旅人']
   },
   {
     id: 8,
     title: '深夜敲门声',
     face: '凌晨3点，一个女人听到有人在敲她的门。她从猫眼看出去，外面空无一人。但敲门声仍在继续。她打开门，门外确实没有人。但当她低下头时，她尖叫了起来。为什么？',
-    bottom: '门外是一个没有腿的乞丐（或残疾人），他用手支撑着身体在地上爬行。因为他太矮了，从猫眼看不到他。他用仅有的一只手敲门，所以女人打开门往下看时才看到他。他只是在乞讨食物或钱。',
-    yes_keywords: ['乞丐','残疾人','没有腿','爬','矮','猫眼','看不到','往下看','手','支撑','地上','躺','趴','乞讨','要饭'],
-    no_keywords: ['鬼','幽灵','杀人','凶手','藏','躲','天花板','上面','小孩','恶作剧','玩笑','梦','幻觉','精神','疯'],
-    themeWords: ['凌晨','敲门','猫眼','没人','尖叫','女人','门']
+    bottom: '门外是一个没有腿的乞丐，他用手支撑着身体在地上爬行。因为他太矮了，从猫眼看不到他。他用仅有的一只手敲门，所以女人打开门往下看时才看到他。他只是在乞讨。',
+    keywords: ['乞丐','残疾人','没有腿','爬','猫眼','看不到','往下看','地上','乞讨']
   }
 ];
 
-// ==================== 状态管理 ====================
-let currentPuzzle = 0;
-let mode = 'auto'; // 'auto' | 'manual'
+// ==================== 全局状态 ====================
+let players = [];           // { name, color, avatarChar }
+let hostName = '主持人';
+let currentTurnIndex = 0;  // 当前轮到哪位玩家
 let qaHistory = [];
+let currentPuzzleIndex = 0;
+let enabledPuzzles = [];
+let pendingQuestion = null; // 等待主持人判断的问题
+let puzzleDone = new Set(); // 已完成的谜题
 
-// ==================== 初始化 ====================
-function init() {
-  renderPuzzleNav();
-  loadPuzzle(0);
+const AVATAR_COLORS = ['#e8945a','#5a8dc8','#9b7fd4','#5cb88d','#c85a5a','#5aa8a0','#d4a853','#8ab45a'];
+
+// ==================== 初始化设置页 ====================
+document.addEventListener('DOMContentLoaded', () => {
+  renderPuzzleCheckboxes();
+  updateInviteUrl();
+  document.getElementById('hostName').addEventListener('input', () => {
+    hostName = document.getElementById('hostName').value.trim() || '主持人';
+    updateInviteUrl();
+  });
+});
+
+function renderPuzzleCheckboxes() {
+  const container = document.getElementById('puzzleCheckboxes');
+  container.innerHTML = puzzles.map((p, i) => `
+    <label class="checkbox-item checked" data-index="${i}" onclick="togglePuzzle(${i}, this)">
+      ${p.id}. ${p.title}
+      <input type="checkbox" checked>
+    </label>
+  `).join('');
+  enabledPuzzles = puzzles.map((_, i) => i);
 }
 
-function renderPuzzleNav() {
-  const nav = document.getElementById('puzzleNav');
-  nav.innerHTML = puzzles.map((p, i) =>
-    `<button class="puzzle-dot${i === currentPuzzle ? ' active' : ''}" onclick="loadPuzzle(${i})">${p.id}</button>`
-  ).join('');
+function togglePuzzle(index, el) {
+  el.classList.toggle('checked');
+  const checkbox = el.querySelector('input');
+  checkbox.checked = el.classList.contains('checked');
+  updateEnabledPuzzles();
 }
 
-function loadPuzzle(index) {
-  currentPuzzle = index;
+function updateEnabledPuzzles() {
+  const checkboxes = document.querySelectorAll('#puzzleCheckboxes .checkbox-item');
+  enabledPuzzles = [];
+  checkboxes.forEach(cb => {
+    if (cb.classList.contains('checked')) {
+      enabledPuzzles.push(parseInt(cb.dataset.index));
+    }
+  });
+  const btn = document.getElementById('startBtn');
+  btn.textContent = enabledPuzzles.length === 0
+    ? '⚠️ 请至少选择1道谜题'
+    : `🚀 开始游戏（${enabledPuzzles.length}题）`;
+}
+
+function addPlayer() {
+  const input = document.getElementById('newPlayerInput');
+  const name = input.value.trim();
+  if (!name) return;
+  if (players.find(p => p.name === name)) {
+    showToast('玩家名称已存在');
+    return;
+  }
+  if (players.length >= 12) {
+    showToast('最多12位玩家');
+    return;
+  }
+
+  players.push({
+    name: name,
+    color: AVATAR_COLORS[players.length % AVATAR_COLORS.length],
+    avatarChar: name[0].toUpperCase()
+  });
+
+  renderPlayerTags();
+  input.value = '';
+  input.focus();
+  updateInviteUrl();
+  updateStartButton();
+}
+
+function removePlayer(index) {
+  players.splice(index, 1);
+  renderPlayerTags();
+  updateInviteUrl();
+  updateStartButton();
+}
+
+function renderPlayerTags() {
+  const container = document.getElementById('playerTags');
+  container.innerHTML = players.map((p, i) => `
+    <span class="player-tag">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:${p.color};color:#1a1a24;font-size:0.7em;font-weight:bold;">${p.avatarChar}</span>
+      ${escapeHtml(p.name)}
+      <span class="remove-tag" onclick="removePlayer(${i})">×</span>
+    </span>
+  `).join('');
+}
+
+function updateStartButton() {
+  const btn = document.getElementById('startBtn');
+  btn.disabled = players.length === 0 || enabledPuzzles.length === 0;
+}
+
+// ==================== 开始游戏 ====================
+function startGame() {
+  updateEnabledPuzzles();
+  if (enabledPuzzles.length === 0) { showToast('请至少选择1道谜题'); return; }
+  if (players.length === 0) { showToast('请至少添加1位玩家'); return; }
+  
+  hostName = document.getElementById('hostName').value.trim() || '主持人';
+
+  document.getElementById('setupPage').style.display = 'none';
+  document.getElementById('gamePage').style.display = 'flex';
+
+  document.getElementById('displayHostName').textContent = hostName;
+  document.getElementById('puzzleTotal').textContent = enabledPuzzles.length;
+
+  currentPuzzleIndex = 0;
+  puzzleDone.clear();
   qaHistory = [];
-  document.getElementById('soupFace').textContent = puzzles[index].face;
-  document.getElementById('soupBottom').textContent = puzzles[index].bottom;
-  document.getElementById('qaLog').innerHTML =
-    '<div style="color:var(--text-muted);text-align:center;padding:30px;">输入你的问题，尝试推理出海龟汤的真相...</div>';
+  currentTurnIndex = 0;
+
+  renderPlayerPanel();
+  loadPuzzle(enabledPuzzles[0]);
+  updateInviteUrl();
+}
+
+// ==================== 玩家面板 ====================
+function renderPlayerPanel() {
+  const container = document.getElementById('playerPanel');
+  container.innerHTML = players.map((p, i) => `
+    <div class="player-card${i === currentTurnIndex ? ' active' : ''}" id="playerCard${i}">
+      <span class="player-avatar" style="background:${p.color};">${p.avatarChar}</span>
+      <span class="player-name">${escapeHtml(p.name)}</span>
+    </div>
+  `).join('');
+
+  document.getElementById('currentTurn').textContent =
+    players.length > 0 ? players[currentTurnIndex].name : '—';
+
+  // 更新输入框状态
+  updateInputState();
+}
+
+function updateInputState() {
+  const input = document.getElementById('questionInput');
+  const submitBtn = document.getElementById('submitBtn');
+  const judgeBtns = document.getElementById('judgeBtns');
+
+  if (players.length === 0) return;
+  if (pendingQuestion !== null) {
+    // 有待判断的问题
+    input.disabled = true;
+    submitBtn.disabled = true;
+    judgeBtns.style.display = 'flex';
+  } else {
+    input.disabled = false;
+    submitBtn.disabled = false;
+    judgeBtns.style.display = 'none';
+    input.placeholder = `${players[currentTurnIndex]?.name || '玩家'} 在此输入问题...`;
+  }
+}
+
+// ==================== 谜题加载 ====================
+function loadPuzzle(index) {
+  currentPuzzleIndex = index;
+  const p = puzzles[enabledPuzzles[index]];
+  qaHistory = [];
+  pendingQuestion = null;
+  document.getElementById('soupFace').textContent = p.face;
+  document.getElementById('soupBottom').textContent = p.bottom;
+  document.getElementById('puzzleTitle').textContent = `颜${p.id}：${p.title}`;
+  document.getElementById('puzzleIndex').textContent = index + 1;
+  document.getElementById('qaLog').innerHTML = '<div class="qa-empty">筋待玩家叐问...</div>';
+  document.getElementById('qaCount').textContent = '共 0 条';
   document.getElementById('questionInput').value = '';
+  document.getElementById('judgeBtns').style.display = 'none';
+
+  currentTurnIndex = 0;
+  renderPlayerPanel();
   renderPuzzleNav();
+  updateInputState();
+
   // 高亮动画
   const card = document.getElementById('faceCard');
   card.classList.add('highlight');
   setTimeout(() => card.classList.remove('highlight'), 600);
-  updateJudgeVisibility();
 }
 
-function setMode(m) {
-  mode = m;
-  document.getElementById('modeAuto').classList.toggle('active', m === 'auto');
-  document.getElementById('modeManual').classList.toggle('active', m === 'manual');
-  updateJudgeVisibility();
+function renderPuzzleNav() {
+  const nav = document.getElementById('puzzleNav');
+  nav.innerHTML = enabledPuzzles.map((pi, i) => {
+    const p = puzzles[pi];
+    let cls = 'puzzle-dot';
+    if (i === currentPuzzleIndex) cls += ' active';
+    else if (puzzleDone.has(pi)) cls += ' done';
+    return `<button class="${cls}" onclick="switchPuzzle(${i})">${p.id}</button>`;
+  }).join('');
 }
 
-function updateJudgeVisibility() {
-  document.getElementById('judgeBtns').style.display = mode === 'manual' ? 'flex' : 'none';
+function switchPuzzle(index) {
+  if (index >= 0 && index < enabledPuzzles.length) {
+    loadPuzzle(index);
+  }
+}
+
+// ==================== 提交问题 ====================
+function submitQuestion() {
+  const input = document.getElementById('questionInput');
+  const question = input.value.trim();
+  if (!question) return;
+  if (players.length === 0) return;
+
+  const playerName = players[currentTurnIndex].name;
+  pendingQuestion = { playerIndex: currentTurnIndex, playerName, question };
+
+  // 显示在记录中（待判状态）
+  addQAEntry(playerName, question, 'pending');
+  input.value = '';
+  updateInputState();
+
+  document.getElementById('judgeBtns').style.display = 'flex';
+}
+
+// ==================== 主持人判断 ====================
+function hostJudge(judgment) {
+  if (!pendingQuestion) return;
+  // 更新最后一条QA记录
+  const lastEntry = qaHistory[qaHistory.length - 1];
+  if (lastEntry && lastEntry.judgment === 'pending') {
+    lastEntry.judgment = judgment;
+  }
+  refreshQALog();
+
+  pendingQuestion = null;
+  updateInputState();
+
+  // 自动切换到下一位玩家
+  if (players.length > 0) {
+    currentTurnIndex = (currentTurnIndex + 1) % players.length;
+    renderPlayerPanel();
+  }
+}
+
+// ==================== 回合控制 ====================
+function nextTurn() {
+  if (pendingQuestion !== null) {
+    showToast('请先对当前问题进行判断');
+    return;
+  }
+  if (players.length === 0) return;
+  currentTurnIndex = (currentTurnIndex + 1) % players.length;
+  renderPlayerPanel();
+  document.getElementById('questionInput').value = '';
+}
+
+function skipTurn() {
+  if (pendingQuestion !== null) {
+    showToast('请先对当前问题进行判断');
+    return;
+  }
+  if (players.length === 0) return;
+  currentTurnIndex = (currentTurnIndex + 1) % players.length;
+  renderPlayerPanel();
+  document.getElementById('questionInput').value = '';
+  showToast(`已跳过，轮到 ${players[currentTurnIndex].name}`);
+}
+
+// ==================== QA记录 ====================
+function addQAEntry(speaker, question, judgment) {
+  qaHistory.push({ speaker, question, judgment });
+  refreshQALog();
+}
+
+function refreshQALog() {
+  const log = document.getElementById('qaLog');
+  if (qaHistory.length === 0) {
+    log.innerHTML = '<div class="qa-empty">等待玩家提问...</div>';
+    document.getElementById('qaCount').textContent = '共 0 条';
+    return;
+  }
+  document.getElementById('qaCount').textContent = `共 ${qaHistory.length} 条`;
+  log.innerHTML = qaHistory.map(qa => {
+    const badgeClass = qa.judgment || 'pending';
+    const badgeText = qa.judgment === 'yes' ? '✅ 是' : qa.judgment === 'no' ? '❌ 否' : qa.judgment === 'irrelevant' ? '➖ 无关' : '⏳ 待判';
+    return `<div class="qa-entry">
+      <span class="qa-speaker">${escapeHtml(qa.speaker)}</span>
+      <span class="qa-badge ${badgeClass}">${badgeText}</span>
+      <span class="qa-question">${escapeHtml(qa.question)}</span>
+    </div>`;
+  }).join('');
+  log.scrollTop = log.scrollHeight;
+}
+
+// ==================== 邀请弹窗 ====================
+function showInviteModal() {
+  document.getElementById('inviteModal').style.display = 'flex';
+  updateInviteModalContent();
+}
+
+function closeInviteModal() {
+  document.getElementById('inviteModal').style.display = 'none';
+}
+
+function updateInviteModalContent() {
+  updateInviteUrl();
+  document.getElementById('invitePlayerList').textContent =
+    '👑 ' + hostName + '（主持人）  |  👥 ' + players.map(p => p.name).join('、');
+}
+
+function updateInviteUrl() {
+  document.getElementById('inviteUrl').textContent = window.location.href;
+}
+
+function copyInviteLink() {
+  const url = window.location.href;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => showToast('✅ 链接已复制！分享给朋友们吧'));
+  } else {
+    // fallback
+    const ta = document.createElement('textarea');
+    ta.value = url;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('✅ 链接已复制！分享给朋友们吧');
+  }
+}
+
+// ==================== 重置 ====================
+function resetGame() {
+  if (pendingQuestion !== null) {
+    if (!confirm('还有待判断的问题，确定要退出吗？')) return;
+  }
+  document.getElementById('setupPage').style.display = 'flex';
+  document.getElementById('gamePage').style.display = 'none';
+  puzzleDone.clear();
+  qaHistory = [];
+  pendingQuestion = null;
+  currentTurnIndex = 0;
+  updateStartButton();
+}
+
+// ==================== 工具函数 ====================
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
 }
 
 function showToast(msg) {
@@ -127,113 +417,25 @@ function showToast(msg) {
   t._timeout = setTimeout(() => t.classList.remove('show'), 2000);
 }
 
-// ==================== 自动判断引擎 ====================
-function autoJudge(question) {
-  const p = puzzles[currentPuzzle];
-  const q = question.toLowerCase();
-  let yesScore = 0, noScore = 0;
-
-  for (const kw of p.yes_keywords) {
-    const kwLower = kw.toLowerCase();
-    if (q.includes(kwLower)) {
-      yesScore += kwLower.length >= 3 ? 2 : 1;
-    }
-  }
-  for (const kw of p.no_keywords) {
-    const kwLower = kw.toLowerCase();
-    if (q.includes(kwLower)) {
-      noScore += kwLower.length >= 3 ? 2 : 1;
-    }
-  }
-  // 主题词轻微加分（增强相关性）
-  for (const tw of p.themeWords) {
-    if (q.includes(tw.toLowerCase())) yesScore += 0.5;
-  }
-
-  if (yesScore >= 2) return 'yes';
-  if (noScore >= 2 && yesScore < 1) return 'no';
-  if (yesScore > noScore * 1.5) return 'yes';
-  if (noScore > yesScore * 1.5) return 'no';
-  if (yesScore > 0 && noScore > 0 && yesScore >= noScore) return 'yes';
-  if (yesScore > 0 && noScore > 0 && noScore > yesScore) return 'no';
-  return 'irrelevant';
-}
-
-// ==================== 提问处理 ====================
-function askQuestion() {
-  const input = document.getElementById('questionInput');
-  const question = input.value.trim();
-  if (!question) return;
-
-  let judgment;
-  if (mode === 'auto') {
-    judgment = autoJudge(question);
-  } else {
-    showToast('请使用下方按钮进行判断');
-    // 在手动模式下，先显示问题等待判断
-    addQAEntry(question, null);
-    input.value = '';
-    return;
-  }
-
-  addQAEntry(question, judgment);
-  input.value = '';
-}
-
-function manualJudge(judgment) {
-  if (mode !== 'manual') return;
-  const lastEntry = qaHistory[qaHistory.length - 1];
-  if (!lastEntry || lastEntry.judgment !== null) {
-    showToast('请先输入一个问题');
-    return;
-  }
-  lastEntry.judgment = judgment;
-  refreshQALog();
-}
-
-function addQAEntry(question, judgment) {
-  qaHistory.push({ question, judgment });
-  refreshQALog();
-}
-
-function refreshQALog() {
-  const log = document.getElementById('qaLog');
-  if (qaHistory.length === 0) {
-    log.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:30px;">输入你的问题，尝试推理出海龟汤的真相...</div>';
-    return;
-  }
-  log.innerHTML = qaHistory.map(qa => {
-    const badgeClass = qa.judgment || 'pending';
-    const badgeText = qa.judgment === 'yes' ? '✅ 是' : qa.judgment === 'no' ? '❌ 否' : qa.judgment === 'irrelevant' ? '➖ 无关' : '⏳ 待判';
-    return `<div class="qa-entry">
-      <span class="qa-badge ${badgeClass}">${badgeText}</span>
-      <span class="qa-question">${escapeHtml(qa.question)}</span>
-    </div>`;
-  }).join('');
-  log.scrollTop = log.scrollHeight;
-}
-
-function resetQA() {
-  qaHistory = [];
-  refreshQALog();
-  document.getElementById('questionInput').value = '';
-}
-
-function escapeHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
-
 // ==================== 键盘快捷键 ====================
 document.addEventListener('keydown', (e) => {
-  if (e.target.tagName === 'INPUT') return; // 不在输入框时
-  if (mode === 'manual') {
-    if (e.key === 'y' || e.key === 'Y' || e.key === '1') manualJudge('yes');
-    if (e.key === 'n' || e.key === 'N' || e.key === '2') manualJudge('no');
-    if (e.key === 'i' || e.key === 'I' || e.key === '3') manualJudge('irrelevant');
+  // 设置页：Enter添加玩家
+  if (document.getElementById('setupPage').style.display !== 'none') {
+    if (e.key === 'Enter' && document.activeElement === document.getElementById('newPlayerInput')) {
+      e.preventDefault();
+      addPlayer();
+    }
+    return;
   }
-  if (e.key === '/' && e.ctrlKey === false) {
+
+  // 游戏页快捷键
+  if (e.target.tagName === 'INPUT') return; // 不在输入框时
+
+  if (e.key === 'y' || e.key === 'Y') hostJudge('yes');
+  if (e.key === 'n' || e.key === 'N') hostJudge('no');
+  if (e.key === 'i' || e.key === 'I') hostJudge('irrelevant');
+  if (e.key === 'ArrowRight' && e.ctrlKey) nextTurn();
+  if (e.key === '/' && !e.ctrlKey) {
     e.preventDefault();
     document.getElementById('questionInput').focus();
   }
@@ -243,7 +445,3 @@ document.addEventListener('keydown', (e) => {
     if (details) details.open = !details.open;
   }
 });
-
-// ==================== 启动 ====================
-init();
-console.log('🐢 海龟汤游戏就绪 | 快捷键: Y/N/I 判断 | Ctrl+B 汤底 | / 聚焦输入框');
