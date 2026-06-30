@@ -68,7 +68,57 @@ let enabledPuzzles = [];
 let pendingQuestion = null; // 等待主持人判断的问题
 let puzzleDone = new Set(); // 已完成的谜题
 
+let userRole = null; // 'host' | 'player'
+let playerName = '';   // 玩家模式下自己的名字
+
 const AVATAR_COLORS = ['#e8945a','#5a8dc8','#9b7fd4','#5cb88d','#c85a5a','#5aa8a0','#d4a853','#8ab45a'];
+
+// ==================== 角色选择 ====================
+function selectRole(role) {
+  userRole = role;
+  document.getElementById('rolePage').style.display = 'none';
+  if (role === 'host') {
+    document.getElementById('setupPage').style.display = 'flex';
+    updateStartButton();
+  } else {
+    document.getElementById('playerJoinPage').style.display = 'flex';
+    document.getElementById('playerNameInput').focus();
+  }
+}
+
+function goBackToRole() {
+  userRole = null;
+  document.body.classList.remove('is-host');
+  document.getElementById('playerJoinPage').style.display = 'none';
+  document.getElementById('setupPage').style.display = 'none';
+  document.getElementById('gamePage').style.display = 'none';
+  document.getElementById('rolePage').style.display = 'flex';
+}
+
+function joinAsPlayer() {
+  const input = document.getElementById('playerNameInput');
+  playerName = input.value.trim();
+  if (!playerName) { showToast('请输入你的名字'); return; }
+
+  document.getElementById('playerJoinPage').style.display = 'none';
+  document.getElementById('gamePage').style.display = 'flex';
+  document.getElementById('displayHostName').textContent = hostName;
+  document.getElementById('puzzleTotal').textContent = enabledPuzzles.length;
+
+  currentPuzzleIndex = 0;
+  puzzleDone.clear();
+  qaHistory = [];
+  currentTurnIndex = 0;
+
+  updateRoleUI();
+  renderPlayerPanel();
+  loadPuzzle(enabledPuzzles[0]);
+  showToast(`🎮 ${playerName}，欢迎加入！`);
+}
+
+function updateRoleUI() {
+  document.body.classList.toggle('is-host', userRole === 'host');
+}
 
 // ==================== 初始化设置页 ====================
 document.addEventListener('DOMContentLoaded', () => {
@@ -171,6 +221,8 @@ function startGame() {
 
   document.getElementById('setupPage').style.display = 'none';
   document.getElementById('gamePage').style.display = 'flex';
+
+  updateRoleUI();
 
   document.getElementById('displayHostName').textContent = hostName;
   document.getElementById('puzzleTotal').textContent = enabledPuzzles.length;
@@ -395,13 +447,20 @@ function resetGame() {
   if (pendingQuestion !== null) {
     if (!confirm('还有待判断的问题，确定要退出吗？')) return;
   }
-  document.getElementById('setupPage').style.display = 'flex';
+  if (userRole === 'host') {
+    document.getElementById('setupPage').style.display = 'flex';
+  }
   document.getElementById('gamePage').style.display = 'none';
   puzzleDone.clear();
   qaHistory = [];
   pendingQuestion = null;
   currentTurnIndex = 0;
-  updateStartButton();
+  if (userRole === 'host') {
+    updateStartButton();
+  } else {
+    document.getElementById('rolePage').style.display = 'flex';
+    userRole = null;
+  }
 }
 
 // ==================== 工具函数 ====================
