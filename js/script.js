@@ -17,7 +17,7 @@ const puzzles = [
   {
     id: 3,
     title: '电梯之谜',
-    face: '有一个男人住在10楼。每天早上他坐电梯到1楼去下班。但每天下班回来，他只会坐到7楼，然后走楼梯上10楼。为什么？（电梯没有坏，下雨天他会直接坐到10楼）',
+    face: '有一个男人住在10楼。每天早上他坐电梯到1楼去上班。但每天下班回来，他只会坐到7楼，然后走楼梯上10楼。为什么？（电梯没有坏，下雨天他会直接坐到10楼）',
     bottom: '这个男人是侏儒（身材矮小）。他只能按到电梯按钮的第7层。下雨天他会带伞，用伞柄可以按到第10层的按钮。',
     keywords: ['矮','侏儒','身高','按不到','按钮','伞','伞柄','下雨']
   },
@@ -166,7 +166,7 @@ function startGame() {
   updateEnabledPuzzles();
   if (enabledPuzzles.length === 0) { showToast('请至少选择1道谜题'); return; }
   if (players.length === 0) { showToast('请至少添加1位玩家'); return; }
-  
+
   hostName = document.getElementById('hostName').value.trim() || '主持人';
 
   document.getElementById('setupPage').style.display = 'none';
@@ -208,6 +208,7 @@ function updateInputState() {
   const judgeBtns = document.getElementById('judgeBtns');
 
   if (players.length === 0) return;
+
   if (pendingQuestion !== null) {
     // 有待判断的问题
     input.disabled = true;
@@ -229,9 +230,9 @@ function loadPuzzle(index) {
   pendingQuestion = null;
   document.getElementById('soupFace').textContent = p.face;
   document.getElementById('soupBottom').textContent = p.bottom;
-  document.getElementById('puzzleTitle').textContent = `颜${p.id}：${p.title}`;
+  document.getElementById('puzzleTitle').textContent = `题${p.id}：${p.title}`;
   document.getElementById('puzzleIndex').textContent = index + 1;
-  document.getElementById('qaLog').innerHTML = '<div class="qa-empty">筋待玩家叐问...</div>';
+  document.getElementById('qaLog').innerHTML = '<div class="qa-empty">等待玩家提问...</div>';
   document.getElementById('qaCount').textContent = '共 0 条';
   document.getElementById('questionInput').value = '';
   document.getElementById('judgeBtns').style.display = 'none';
@@ -285,6 +286,7 @@ function submitQuestion() {
 // ==================== 主持人判断 ====================
 function hostJudge(judgment) {
   if (!pendingQuestion) return;
+
   // 更新最后一条QA记录
   const lastEntry = qaHistory[qaHistory.length - 1];
   if (lastEntry && lastEntry.judgment === 'pending') {
