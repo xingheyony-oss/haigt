@@ -117,7 +117,12 @@ function joinAsPlayer() {
 }
 
 function updateRoleUI() {
-  document.body.classList.toggle('is-host', userRole === 'host');
+  const hostOnlyEls = document.querySelectorAll('.host-only');
+  if (userRole === 'host') {
+    hostOnlyEls.forEach(el => { el.style.display = ''; });
+  } else {
+    hostOnlyEls.forEach(el => { el.style.display = 'none'; });
+  }
 }
 
 // ==================== 初始化设置页 ====================
