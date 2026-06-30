@@ -13,8 +13,32 @@
   <p>多人推理派对 · 主持人模式</p>
 </header>
 
-<!-- ====== 初始化页面 ====== -->
-<div class="main-container" id="setupPage">
+<!-- ====== 角色选择页 ====== -->
+<div class="main-container" id="rolePage">
+  <div class="card" style="text-align:center;">
+    <h2 style="color:var(--gold);margin-bottom:8px;">🐢 海龟汤</h2>
+    <p style="color:var(--text-dim);margin-bottom:24px;">请选择你的角色</p>
+    <button class="btn btn-primary btn-lg" onclick="selectRole('host')" style="margin-bottom:12px;">👑 我是主持人</button>
+    <button class="btn btn-secondary btn-lg" onclick="selectRole('player')">🎮 我是玩家</button>
+  </div>
+</div>
+
+<!-- ====== 玩家加入页 ====== -->
+<div class="main-container" id="playerJoinPage" style="display:none;">
+  <div class="card">
+    <h2>🎮 加入游戏</h2>
+    <div class="form-group">
+      <label>你的名字</label>
+      <input type="text" id="playerNameInput" placeholder="输入你的名字" maxlength="10">
+    </div>
+    <button class="btn btn-primary btn-lg" onclick="joinAsPlayer()">🚀 加入游戏</button>
+    <p class="hint-text">加入后可以看到汤面，但看不到汤底哦～</p>
+    <button class="btn btn-secondary btn-sm" onclick="goBackToRole()" style="margin-top:16px;">↩ 返回选择</button>
+  </div>
+</div>
+
+<!-- ====== 初始化页面（主持人） ====== -->
+<div class="main-container" id="setupPage" style="display:none;">
   <div class="card">
     <h2>🎭 游戏设置</h2>
 
@@ -53,7 +77,7 @@
       <span class="badge badge-host">👑 主持人：<strong id="displayHostName"></strong></span>
       <span class="badge badge-puzzle">📋 第 <strong id="puzzleIndex">1</strong>/<span id="puzzleTotal">8</span> 题</span>
     </div>
-    <div class="share-area">
+    <div class="share-area host-only">
       <button class="btn btn-secondary btn-sm" onclick="showInviteModal()">📨 邀请朋友</button>
       <button class="btn btn-secondary btn-sm" onclick="resetGame()">🔄 重新设置</button>
     </div>
@@ -66,10 +90,12 @@
       <span class="puzzle-title" id="puzzleTitle"></span>
     </div>
     <div class="soup-face" id="soupFace"></div>
-    <details>
-      <summary>🔍 点击查看汤底（仅主持人可见）</summary>
-      <div class="soup-bottom" id="soupBottom"></div>
-    </details>
+    <div id="soupBottomArea" class="host-only">
+      <details>
+        <summary>🔍 点击查看汤底（仅主持人可见）</summary>
+        <div class="soup-bottom" id="soupBottom"></div>
+      </details>
+    </div>
   </div>
 
   <!-- 玩家面板 -->
@@ -79,7 +105,7 @@
       <span style="color:var(--text-dim);font-size:0.85em;">当前回合：<strong id="currentTurn" style="color:var(--gold-light);"></strong></span>
     </div>
     <div class="player-panel" id="playerPanel"></div>
-    <div class="turn-controls">
+    <div class="turn-controls host-only">
       <button class="btn btn-secondary btn-sm" onclick="nextTurn()" id="nextTurnBtn">⏭ 下一位提问</button>
       <button class="btn btn-secondary btn-sm" onclick="skipTurn()">⏩ 跳过本轮</button>
     </div>
@@ -94,21 +120,23 @@
     <div class="qa-log" id="qaLog">
       <div class="qa-empty">等待玩家提问...</div>
     </div>
-    <!-- 主持人判断区 -->
-    <div class="input-area">
-      <input type="text" id="questionInput" placeholder="当前玩家在此输入问题..." onkeydown="if(event.key==='Enter')submitQuestion()" disabled>
-      <button class="btn btn-primary" onclick="submitQuestion()" id="submitBtn" disabled>提交</button>
-    </div>
-    <div class="judge-btns" id="judgeBtns" style="display:none;">
-      <span class="judge-label">主持人判断：</span>
-      <button class="judge-btn judge-yes" onclick="hostJudge('yes')">✅ 是</button>
-      <button class="judge-btn judge-no" onclick="hostJudge('no')">❌ 否</button>
-      <button class="judge-btn judge-irrelevant" onclick="hostJudge('irrelevant')">➖ 无关</button>
+    <!-- 主持人提问/判断区 -->
+    <div class="host-only" id="hostInputArea">
+      <div class="input-area">
+        <input type="text" id="questionInput" placeholder="当前玩家在此输入问题..." onkeydown="if(event.key==='Enter')submitQuestion()" disabled>
+        <button class="btn btn-primary" onclick="submitQuestion()" id="submitBtn" disabled>提交</button>
+      </div>
+      <div class="judge-btns" id="judgeBtns" style="display:none;">
+        <span class="judge-label">主持人判断：</span>
+        <button class="judge-btn judge-yes" onclick="hostJudge('yes')">✅ 是</button>
+        <button class="judge-btn judge-no" onclick="hostJudge('no')">❌ 否</button>
+        <button class="judge-btn judge-irrelevant" onclick="hostJudge('irrelevant')">➖ 无关</button>
+      </div>
     </div>
   </div>
 
-  <!-- 谜题导航 -->
-  <div class="card">
+  <!-- 谜题导航（主持人） -->
+  <div class="card host-only">
     <div class="puzzle-nav" id="puzzleNav"></div>
   </div>
 </div>
